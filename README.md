@@ -1,36 +1,122 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ScaleForge Portfolio (Next.js App Router)
 
-## Getting Started
+A production-style agency website built with Next.js App Router, TypeScript, and Tailwind CSS.
 
-First, run the development server:
+## Tech Stack
+
+- Next.js (App Router)
+- React + TypeScript
+- Tailwind CSS
+- React Hook Form + Zod (contact form validation)
+- Resend (email delivery)
+- Framer Motion (section animations)
+
+## Run Locally
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Production build:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build
+```
 
-## Learn More
+## Environment Variables
 
-To learn more about Next.js, take a look at the following resources:
+Create `.env.local`:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+RESEND_API_KEY=your_key_here
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Rendering Architecture
 
-## Deploy on Vercel
+### React Server Components (RSC)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+This project follows App Router defaults: components are Server Components unless `"use client"` is declared.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Implemented as RSC:
+
+- Pages: `app/page.tsx`, `app/about/page.tsx`, `app/services/page.tsx`, `app/contact/page.tsx`
+- Layout: `app/layout.tsx`
+- Most UI/sections without browser-only state
+
+Client Components (only where needed):
+
+- `components/layout/Navbar.tsx` (uses `usePathname` for active route highlight)
+- `components/ui/FadeIn.tsx` (Framer Motion viewport animation)
+- `components/sections/Testimonials.tsx` (carousel state and interactions)
+- `components/ui/ContactForm.tsx` (form state, validation, and submit lifecycle)
+
+### Static Generation
+
+Pages are configured for static generation:
+
+- `export const dynamic = "force-static"`
+- `export const revalidate = false`
+
+You can confirm via `npm run build` output (`○` for static routes).
+
+## Suspense, Streaming, and Code Splitting
+
+Implemented in `app/page.tsx`:
+
+- Uses `lazy()` imports for below-the-fold sections:
+  - `Testimonials`
+- Wraps lazy components in `<Suspense>` with skeleton fallbacks.
+
+Why this matters:
+
+- **Code splitting**: JavaScript for lazy sections is loaded only when needed.
+- **Streaming**: Suspense boundaries allow partial UI to render while deferred parts resolve.
+- **Perceived performance**: users see content sooner with progressive rendering.
+
+## Image Optimization
+
+All images use `next/image` (no raw `<img>` tags in app UI components).
+
+Where implemented:
+
+- `components/sections/Hero.tsx` (technology icons in floating cards)
+- `components/sections/Contact.tsx` (map placeholder image)
+- `components/ui/TeamCard.tsx` (team avatar optimization ready)
+
+Optimizations used:
+
+- Responsive `sizes`
+- `loading="lazy"` on below-the-fold assets
+- `placeholder="blur"` + `blurDataURL` where appropriate
+- Explicit `width`/`height`
+
+## API Route
+
+Contact email endpoint:
+
+- `app/api/contact/route.ts`
+- Server-side Zod validation
+- Resend email send call
+
+## Project Structure
+
+```text
+app/
+  layout.tsx
+  page.tsx
+  about/page.tsx
+  services/page.tsx
+  contact/page.tsx
+  api/contact/route.ts
+components/
+  layout/
+  sections/
+  ui/
+lib/
+  data/
+public/
+  images/
+```
