@@ -1,0 +1,27 @@
+<svg width="1280" height="720" viewBox="0 0 1280 720" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1280" height="720" fill="#0A0A0A"/>
+  <rect x="40" y="40" width="1200" height="640" rx="24" fill="#111111" stroke="rgba(255,255,255,0.1)"/>
+  <g opacity="0.7">
+    <path d="M120 600H520L650 120H1160" stroke="#00D4FF" stroke-opacity="0.6" stroke-width="2"/>
+    <path d="M120 530H450L590 170H1120" stroke="#00D4FF" stroke-opacity="0.3" stroke-width="2"/>
+    <circle cx="520" cy="600" r="6" fill="#00D4FF"/>
+    <circle cx="650" cy="120" r="6" fill="#00D4FF"/>
+    <circle cx="930" cy="120" r="6" fill="#00D4FF"/>
+  </g>
+  <g opacity="0.25">
+    <path d="M80 80H1240" stroke="white" stroke-width="1"/>
+    <path d="M80 160H1240" stroke="white" stroke-width="1"/>
+    <path d="M80 240H1240" stroke="white" stroke-width="1"/>
+    <path d="M80 320H1240" stroke="white" stroke-width="1"/>
+    <path d="M80 400H1240" stroke="white" stroke-width="1"/>
+    <path d="M80 480H1240" stroke="white" stroke-width="1"/>
+    <path d="M80 560H1240" stroke="white" stroke-width="1"/>
+    <path d="M160 80V640" stroke="white" stroke-width="1"/>
+    <path d="M320 80V640" stroke="white" stroke-width="1"/>
+    <path d="M480 80V640" stroke="white" stroke-width="1"/>
+    <path d="M640 80V640" stroke="white" stroke-width="1"/>
+    <path d="M800 80V640" stroke="white" stroke-width="1"/>
+    <path d="M960 80V640" stroke="white" stroke-width="1"/>
+    <path d="M1120 80V640" stroke="white" stroke-width="1"/>
+  </g>
+</svg>
